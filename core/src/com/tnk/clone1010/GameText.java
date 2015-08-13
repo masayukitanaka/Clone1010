@@ -24,4 +24,9 @@ public class GameText {
         glyphLayout.setText(font, "AAA", Color.RED, 0, Align.center, false);
         font.draw(batch, glyphLayout, MyGdxGame.VIEW_WIDTH * 0.5f, MyGdxGame.VIEW_HEIGHT - glyphLayout.height * 1.5f);
     }
+
+    public void drawScore(SpriteBatch batch, int score) {
+        glyphLayout.setText(font, "" + score, Color.valueOf("2196F3FF"), 0, Align.center, false); // #2196F3
+        font.draw(batch, glyphLayout, MyGdxGame.VIEW_WIDTH * 0.5f, MyGdxGame.VIEW_HEIGHT - glyphLayout.height * 1.5f);
+    }
 }

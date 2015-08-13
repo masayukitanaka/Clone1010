@@ -1,7 +1,5 @@
 package com.tnk.clone1010;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.Random;
 
 /**
@@ -22,8 +20,26 @@ public class Block {
 
     private static Random r = new Random();
 
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     /* variables */
     private int color;
+    private int x;
+    private int y;
 
     public Block(int color){
         this.color = color;
@@ -33,12 +49,13 @@ public class Block {
      * @return int color (min: 1)
      */
     public static int getRandomColor() {
-        //int nextInt = r.nextInt();
-        //int ret = 1 + ((nextInt % VARIATION_COLOR + VARIATION_COLOR) % VARIATION_COLOR);
-
         int ret =  r.nextInt(VARIATION_COLOR) + 1;
-        Gdx.app.log("@@@", "[test] random color:" + ret);
+        //Gdx.app.log("@@@", "[test] random color:" + ret);
 
         return ret;
+    }
+
+    public int getColor() {
+        return color;
     }
 }

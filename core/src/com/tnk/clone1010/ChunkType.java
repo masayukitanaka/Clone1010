@@ -223,7 +223,7 @@ public enum ChunkType {
                 int num17[][] = {{1,1,1},{0,0,1},{0,0,1}};
                 return num17;
             case LEFT_DOWN5:
-                int num18[][] = {{1,1,1},{1,0,0},{1,0,1}};
+                int num18[][] = {{1,1,1},{1,0,0},{1,0,0}};
                 return num18;
             case SQUARE9:
                 int num19[][] = {{1,1,1},{1,1,1},{1,1,1}};
