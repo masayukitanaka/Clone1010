@@ -18,7 +18,6 @@ public class Chunk {
     private int x;
     private int y;
     int[][] map;
-    private int mHeight;
 
     public Chunk(int x, int y, int blockSize) {
         this.x = x;
@@ -28,9 +27,8 @@ public class Chunk {
 
         this.type = ChunkType.getRandom();
         this.map = type.getDrawMap();
-        this.color = type.getBlockColor(); // Block.getRandomColor();
+        this.color = type.getBlockColor();
         this.blocks = new Block[type.getBlockNumber()];
-//        Gdx.app.log("@@@", "random color:" + color);
 
         for(int i = 0; i < blocks.length; i++){
             blocks[i] = new Block(color);
@@ -72,7 +70,7 @@ public class Chunk {
     }
 
     public boolean isContain(Vector3 coord){
-        int margin = 60;
+        int margin = MyGdxGame.TOUCH_MARGIN;
         for(int i = 0; i < map.length; i++){
             for(int j = 0; j < map[0].length; j++) {
                 if(map[i][j] == 1){

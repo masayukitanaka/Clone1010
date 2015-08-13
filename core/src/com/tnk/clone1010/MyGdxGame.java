@@ -23,11 +23,13 @@ public class MyGdxGame extends ApplicationAdapter {
     public static final int BLOCK_SIZE = 42;
     public static final int NEXT_CHUNK_NUMBER = 3;
     public static final int HEIGHT_MENU_BAR = 200;
-    public static final int SIZE_RESUME_BUTTON = 100;
+    public static final int RESUME_BUTTON = 100;
+    public static final int RESET_BUTTON = 60;
+    public static final int TOUCH_MARGIN = 60;
 
-	private OrthographicCamera camera; // upside down
-	private OrthographicCamera uiCamera;
-	private OrthographicCamera menuCamera;
+	private OrthographicCamera camera; // upside down: y coordinate goes down to increase
+	private OrthographicCamera uiCamera; // y coordinate goes up to increase
+	private OrthographicCamera menuCamera; // y coordinate goes up to increase
 
 	private SpriteBatch batch;
     private int score;
@@ -115,11 +117,10 @@ public class MyGdxGame extends ApplicationAdapter {
         // user action
         if(Gdx.input.justTouched()){
             updatePosition();
-            // Gdx.app.log("@@@@@", "[debug] x:" + touchPosition.x + ", y:" + touchPosition.y);
-            if(VIEW_WIDTH / 2 - SIZE_RESUME_BUTTON / 2 <= touchPosition.x
-                    && touchPosition.x <= VIEW_WIDTH / 2 + SIZE_RESUME_BUTTON / 2
-                    && VIEW_HEIGHT / 2 - SIZE_RESUME_BUTTON / 2 <= touchPosition.y
-                    && touchPosition.y <= VIEW_HEIGHT / 2 + SIZE_RESUME_BUTTON / 2
+            if(VIEW_WIDTH / 2 - RESUME_BUTTON / 2 <= touchPosition.x
+                    && touchPosition.x <= VIEW_WIDTH / 2 + RESUME_BUTTON / 2
+                    && VIEW_HEIGHT / 2 - RESUME_BUTTON / 2 <= touchPosition.y
+                    && touchPosition.y <= VIEW_HEIGHT / 2 + RESUME_BUTTON / 2
                     ){
                 // within resume button
                 resetGame();
@@ -142,10 +143,10 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.begin();
         batch.draw(
                 resumeButton,
-                VIEW_WIDTH / 2 - SIZE_RESUME_BUTTON/2,
-                VIEW_HEIGHT / 2 - SIZE_RESUME_BUTTON/2,
-                SIZE_RESUME_BUTTON,
-                SIZE_RESUME_BUTTON);
+                VIEW_WIDTH / 2 - RESUME_BUTTON /2,
+                VIEW_HEIGHT / 2 - RESUME_BUTTON /2,
+                RESUME_BUTTON,
+                RESUME_BUTTON);
         batch.end();
     }
 
@@ -153,6 +154,14 @@ public class MyGdxGame extends ApplicationAdapter {
         // user action
         if(Gdx.input.justTouched()){
             updatePosition();
+
+            // reset
+            if(VIEW_WIDTH - RESET_BUTTON - TOUCH_MARGIN <= touchPosition.x
+                    && touchPosition.y <= RESET_BUTTON + TOUCH_MARGIN
+                    ){
+                resetGame();
+                return;
+            }
 
             //Gdx.app.log("@@@", "x: " + touchPosition.x + ", y:" + touchPosition.y);
             for(int i = 0; i < next.length; i++){
@@ -235,6 +244,7 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.begin();
 
         text.drawScore(batch, score);
+        batch.draw(resumeButton, VIEW_WIDTH - RESET_BUTTON - 10, VIEW_HEIGHT - RESET_BUTTON - 10, RESET_BUTTON, RESET_BUTTON);
 
         batch.end();
     }
@@ -269,7 +279,6 @@ public class MyGdxGame extends ApplicationAdapter {
         }else{
             x = VIEW_WIDTH / division * (i + 1);
         }
-//        Gdx.app.log("@@@", "[nextXcoordAt] i:" + i +", x:" + x);
 
         return x;
     }

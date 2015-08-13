@@ -18,13 +18,14 @@ public class Board {
     private int y;
     private Array<Integer> removeRows;
     private Array<Integer> removeCols;
+    private Array<Block> animatingBlock;
 
     public Board(int x, int y){
         this.x = x;
         this.y = y;
 
-        //FIXME this is debug
-//        for(int i = 0; i < 9; i++) {
+        // comment out when debugging
+//        for(int i = 0; i < 7; i++) {
 //            for (int j = 0; j < 9; j++) {
 //                blocks[i][j] = new Block(Block.COLOR_BLUE);
 //            }
@@ -39,10 +40,23 @@ public class Board {
                 if(blocks[i][j] == null){
                     batch.draw(defaultTexture, x + MyGdxGame.BLOCK_SIZE * j, y + MyGdxGame.BLOCK_SIZE * i, MyGdxGame.BLOCK_SIZE, MyGdxGame.BLOCK_SIZE);
                 }else{
-                    // 各色ブロック
+                    // block for each color
                     Texture texture = game.getImage(blocks[i][j].getColor());
                     batch.draw(texture, x + MyGdxGame.BLOCK_SIZE * j, y + MyGdxGame.BLOCK_SIZE * i, MyGdxGame.BLOCK_SIZE, MyGdxGame.BLOCK_SIZE);
                 }
+            }
+        }
+
+        if(animatingBlock != null && animatingBlock.size > 0) {
+            Array<Block> deadBlocks = new Array<Block>();
+            for (Block b : animatingBlock) {
+                b.animateFading(batch, game);
+                if (b.isDead()) {
+                    deadBlocks.add(b);
+                }
+            }
+            for (Block b : deadBlocks) {
+                animatingBlock.removeValue(b, true);
             }
         }
     }
@@ -76,14 +90,14 @@ public class Board {
     }
 
     public boolean isPlaceable(Chunk chunk){
-        //Gdx.app.log("@@@ debug", "chunk:" + chunk.toString() + ", is placeable: " + isPlaceable(chunk));
-
         int map[][] = chunk.getDrawMap();
         for(int i = 0; i <= SIZE - map.length; i++) {
             for (int j = 0; j <= SIZE - map[0].length; j++) {
                 int position[] = new int[2];
-//                position[0] = Board.getXcoordAt(j);
-//                position[1] = Board.getYcoordAt(i);
+                /**
+                 * position[0] = Board.getXcoordAt(j);
+                 * position[1] = Board.getYcoordAt(i);
+                 */
                 position[0] = i;
                 position[1] = j;
                 if(!isPreoccupied(chunk, position)){
@@ -219,12 +233,19 @@ public class Board {
 
     public int eraseLine() {
         //Gdx.app.log("@@@@", "[remove] rows:[" + removeRows.toString(",") +"], cols:[" + removeCols.toString(",") + "]" );
+
+        animatingBlock = new Array<Block>();
+
         int removed = 0;
         for(Integer row : removeRows){
             for (int j = 0; j < SIZE; j++) {
                 if(blocks[row][j] != null){
                     removed++;
                 }
+                blocks[row][j].setRow(row);
+                blocks[row][j].setCol(j);
+                animatingBlock.add(blocks[row][j]);
+
                 blocks[row][j] = null;
             }
         }
@@ -234,6 +255,10 @@ public class Board {
                 if(blocks[i][col] != null){
                     removed++;
                 }
+                blocks[i][col].setRow(i);
+                blocks[i][col].setCol(col);
+                animatingBlock.add(blocks[i][col]);
+
                 blocks[i][col] = null;
             }
         }

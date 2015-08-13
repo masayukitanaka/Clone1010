@@ -1,5 +1,7 @@
 package com.tnk.clone1010;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import java.util.Random;
 
 /**
@@ -21,6 +23,10 @@ public class Block {
     public static final int COLOR_TEAL = 9;
     public static final int VARIATION_COLOR = 9; // except grey;
 
+    private float ANIMATING_TIME = 0.5f;
+    private int animSize;
+    private boolean isDead;
+
     private static Random r = new Random();
 
     /* variables */
@@ -28,8 +34,29 @@ public class Block {
     private int x;
     private int y;
 
+    private int rowIndex;
+    private int colIndex;
+
+    public int getRow() {
+        return rowIndex;
+    }
+
+    public void setRow(int rowIndex) {
+        this.rowIndex = rowIndex;
+    }
+
+    public int getCol() {
+        return colIndex;
+    }
+
+    public void setCol(int colIndex) {
+        this.colIndex = colIndex;
+    }
+
     public Block(int color){
+
         this.color = color;
+        animSize = MyGdxGame.BLOCK_SIZE;
     }
 
     /**
@@ -41,5 +68,19 @@ public class Block {
 
     public int getColor() {
         return color;
+    }
+
+    public void animateFading(SpriteBatch batch, MyGdxGame game) {
+        animSize -= 2;
+        int margin = (MyGdxGame.BLOCK_SIZE - animSize ) / 2;
+        batch.draw(game.getImage(color), Board.getXcoordAt(colIndex) + margin, Board.getYcoordAt(rowIndex) + margin, animSize, animSize);
+
+        if(animSize <= 0){
+            isDead = true;
+        }
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 }

@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.Align;
 public class GameText {
     private GlyphLayout glyphLayout;
     private BitmapFont font;
-    private int score;
 
     public GameText() {
         glyphLayout = new GlyphLayout();
@@ -26,7 +25,7 @@ public class GameText {
     }
 
     public void drawScore(SpriteBatch batch, int score) {
-        glyphLayout.setText(font, "" + score, Color.valueOf("2196F3FF"), 0, Align.center, false); // #2196F3
-        font.draw(batch, glyphLayout, MyGdxGame.VIEW_WIDTH * 0.5f, MyGdxGame.VIEW_HEIGHT - glyphLayout.height * 1.5f);
+        glyphLayout.setText(font, "" + score, Color.valueOf("2196F3FF"), 0, Align.left, false); // #2196F3
+        font.draw(batch, glyphLayout, (MyGdxGame.VIEW_WIDTH - 20) * 0.5f, MyGdxGame.VIEW_HEIGHT - glyphLayout.height * 1.5f);
     }
 }
