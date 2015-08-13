@@ -233,4 +233,38 @@ public enum ChunkType {
         return null;
     }
 
+    public int getBlockColor() {
+        switch(this){
+            case SINGLE:
+                return Block.COLOR_PURPLE;
+            case VERTICAL2:
+            case HORIZONTAL2:
+                return Block.COLOR_YELLOW;
+            case VERTICAL3:
+            case HORIZONTAL3:
+                return Block.COLOR_ORANGE;
+            case LEFT_UP3:
+            case RIGHT_UP3:
+            case RIGHT_DOWN3:
+            case LEFT_DOWN3:
+                return Block.COLOR_TEAL;
+            case VERTICAL4:
+            case HORIZONTAL4:
+                return Block.COLOR_PINK;
+            case SQUARE4:
+                return Block.COLOR_L_GREEN;
+            case VERTICAL5:
+            case HORIZONTAL5:
+                return Block.COLOR_RED;
+            case RIGHT_UP5:
+            case LEFT_UP5:
+            case RIGHT_DOWN5:
+            case LEFT_DOWN5:
+                return Block.COLOR_BLUE;
+            case SQUARE9:
+                return Block.COLOR_D_GREEN;
+        }
+        Gdx.app.log(getClass().getSimpleName(), "SHOULD NOT BE HERE.");
+        return 0;
+    }
 }

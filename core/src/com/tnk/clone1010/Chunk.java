@@ -9,20 +9,16 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class Chunk {
 
-    /* setting, common values */
-
-
     /* variables */
     private Block[] blocks;
     private int color;
     private ChunkType type;
-    private Texture blockTexture;
     private int blockWidth;
     private int blockHeight;
     private int x;
     private int y;
-    private boolean isHeld = false;
     int[][] map;
+    private int mHeight;
 
     public Chunk(int x, int y, int blockSize) {
         this.x = x;
@@ -31,9 +27,9 @@ public class Chunk {
         this.blockHeight = blockSize;
 
         this.type = ChunkType.getRandom();
-        map = type.getDrawMap();
+        this.map = type.getDrawMap();
+        this.color = type.getBlockColor(); // Block.getRandomColor();
         this.blocks = new Block[type.getBlockNumber()];
-        this.color = Block.getRandomColor();
 //        Gdx.app.log("@@@", "random color:" + color);
 
         for(int i = 0; i < blocks.length; i++){
@@ -53,7 +49,7 @@ public class Chunk {
         return y - blockHeight * map.length / 2;
     }
 
-    public void draw(MyGdxGame game, SpriteBatch batch){ // , int centerX, int centerY) {
+    public void draw(MyGdxGame game, SpriteBatch batch){
         Texture texture = game.getImage(color);
 
         for(int i = 0; i < map.length; i++){
@@ -76,14 +72,15 @@ public class Chunk {
     }
 
     public boolean isContain(Vector3 coord){
+        int margin = 60;
         for(int i = 0; i < map.length; i++){
             for(int j = 0; j < map[0].length; j++) {
                 if(map[i][j] == 1){
                     int leftX = getLeft() + j * blockWidth;
                     int topY = getTop() + i * blockHeight;
-                    if((leftX <= coord.x && coord.x <= leftX + blockWidth)
+                    if((leftX - margin <= coord.x && coord.x <= leftX + blockWidth + margin)
                             &&
-                            (topY <= coord.y && coord.y <= topY + blockHeight)){
+                            (topY - margin <= coord.y && coord.y <= topY + blockHeight + margin)){
                         return true;
                     }
                 }
@@ -120,5 +117,17 @@ public class Chunk {
     @Override
     public String toString(){
         return "{chunkType:"+ type +", color:" + color +"}";
+    }
+
+    public int getHeight() {
+        return MyGdxGame.BLOCK_SIZE * map.length / 2;
+    }
+
+    public int getMarginFromFinger() {
+        return marginFunc(map.length);
+    }
+
+    private int marginFunc(int t){
+        return 8 * t * (10 - t);
     }
 }

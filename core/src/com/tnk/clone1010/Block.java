@@ -16,25 +16,12 @@ public class Block {
     public static final int COLOR_YELLOW = 4;
     public static final int COLOR_L_GREEN = 5;
     public static final int COLOR_D_GREEN = 6;
-    public static final int VARIATION_COLOR = 2; // 6;
+    public static final int COLOR_ORANGE = 7;
+    public static final int COLOR_PINK = 8;
+    public static final int COLOR_TEAL = 9;
+    public static final int VARIATION_COLOR = 9; // except grey;
 
     private static Random r = new Random();
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
 
     /* variables */
     private int color;
@@ -49,10 +36,7 @@ public class Block {
      * @return int color (min: 1)
      */
     public static int getRandomColor() {
-        int ret =  r.nextInt(VARIATION_COLOR) + 1;
-        //Gdx.app.log("@@@", "[test] random color:" + ret);
-
-        return ret;
+        return  r.nextInt(VARIATION_COLOR) + 1;
     }
 
     public int getColor() {

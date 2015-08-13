@@ -1,6 +1,5 @@
 package com.tnk.clone1010;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
@@ -25,20 +24,11 @@ public class Board {
         this.y = y;
 
         //FIXME this is debug
-//        for(int j = 0; j < 9; j++){
-//            blocks[8][j] = new Block(Block.COLOR_BLUE);
-//            blocks[9][j] = new Block(Block.COLOR_RED);
+//        for(int i = 0; i < 9; i++) {
+//            for (int j = 0; j < 9; j++) {
+//                blocks[i][j] = new Block(Block.COLOR_BLUE);
+//            }
 //        }
-//
-//        for(int i = 0; i < 8; i++){
-//            blocks[i][9] = new Block(Block.COLOR_BLUE);
-//        }
-        for(int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                blocks[i][j] = new Block(Block.COLOR_BLUE);
-            }
-        }
-
     }
 
     public void draw(SpriteBatch batch, MyGdxGame game) {
@@ -62,24 +52,24 @@ public class Board {
     }
 
     public boolean place(Chunk chunk) {
-        // 一番近いものにあわせて位置を変更する
+        // fix position to the closest block in the board
         int position[] = adjustPosition(chunk);
 
         if(position == null){
             return false;
         }
 
-        // 矩形がマスの中に入っているか調べる
+        // check if the rectangle is in the board
         if(!isContain(chunk, position)){
             return false;
         }
 
-        // 実際のブロックが専有されているものとかぶっていないか調べる
+        // check if each block is occupied
         if(isPreoccupied(chunk, position)){
             return false;
         }
 
-        // 吸収する
+        // absorb it
         absorb(chunk, position);
 
         return true;
@@ -228,7 +218,7 @@ public class Board {
     }
 
     public int eraseLine() {
-        Gdx.app.log("@@@@", "[remove] rows:[" + removeRows.toString(",") +"], cols:[" + removeCols.toString(",") + "]" );
+        //Gdx.app.log("@@@@", "[remove] rows:[" + removeRows.toString(",") +"], cols:[" + removeCols.toString(",") + "]" );
         int removed = 0;
         for(Integer row : removeRows){
             for (int j = 0; j < SIZE; j++) {

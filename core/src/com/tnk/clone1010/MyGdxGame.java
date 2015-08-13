@@ -2,6 +2,7 @@ package com.tnk.clone1010;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -42,6 +43,8 @@ public class MyGdxGame extends ApplicationAdapter {
     private int heldChunkPosition;
 
     private GameState gameState;
+    private Sound slidingSound;
+    private Sound deleteSound;
 
 
     @Override
@@ -57,7 +60,17 @@ public class MyGdxGame extends ApplicationAdapter {
         blockImages[Block.COLOR_NONE] = new Texture("grey.png");
         blockImages[Block.COLOR_RED] = new Texture("red.png");
         blockImages[Block.COLOR_BLUE] = new Texture("blue.png");
+        blockImages[Block.COLOR_PURPLE] = new Texture("purple.png");
+        blockImages[Block.COLOR_YELLOW] = new Texture("yellow.png");
+        blockImages[Block.COLOR_L_GREEN] = new Texture("l_green.png");
+        blockImages[Block.COLOR_D_GREEN] = new Texture("d_green.png");
+        blockImages[Block.COLOR_ORANGE] = new Texture("orange.png");
+        blockImages[Block.COLOR_PINK] = new Texture("pink.png");
+        blockImages[Block.COLOR_TEAL] = new Texture("teal.png");
         resumeButton = new Texture("reboot.png");
+
+        slidingSound = Gdx.audio.newSound(Gdx.files.internal("Hole_Punch-Simon_Craggs-1910998415.mp3"));
+        deleteSound = Gdx.audio.newSound(Gdx.files.internal("Pew_Pew-DKnight556-1379997159.mp3"));
 
         camera = new OrthographicCamera();
         camera.setToOrtho(true, VIEW_WIDTH, VIEW_HEIGHT);
@@ -102,7 +115,7 @@ public class MyGdxGame extends ApplicationAdapter {
         // user action
         if(Gdx.input.justTouched()){
             updatePosition();
-            Gdx.app.log("@@@@@", "[debug] x:" + touchPosition.x + ", y:" + touchPosition.y);
+            // Gdx.app.log("@@@@@", "[debug] x:" + touchPosition.x + ", y:" + touchPosition.y);
             if(VIEW_WIDTH / 2 - SIZE_RESUME_BUTTON / 2 <= touchPosition.x
                     && touchPosition.x <= VIEW_WIDTH / 2 + SIZE_RESUME_BUTTON / 2
                     && VIEW_HEIGHT / 2 - SIZE_RESUME_BUTTON / 2 <= touchPosition.y
@@ -157,7 +170,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 // move
                 updatePosition();
                 heldChunk.setX((int)touchPosition.x);
-                heldChunk.setY((int)touchPosition.y);
+                heldChunk.setY((int)touchPosition.y - heldChunk.getMarginFromFinger());
             }else{
                 // release
                 if(board.place(heldChunk)){
@@ -165,6 +178,7 @@ public class MyGdxGame extends ApplicationAdapter {
                     score += heldChunk.blockNumber();
 
                     if(board.hasLine()){
+                        deleteSound.play();
                         score += board.eraseLine();
                     }
 
@@ -237,13 +251,27 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     private void fillNext(){
+        slidingSound.play();
         for(int i = 0; i < NEXT_CHUNK_NUMBER; i++) {
             next[i] = new Chunk(nextXcoordAt(i), nextYcoordAt(i), SMALL_BLOCK);
         }
     }
 
     private int nextXcoordAt(int i){
-        return VIEW_WIDTH / 4 * (i + 1);
+        int division = 5;
+        int x;
+        if(i == 0){
+            x = VIEW_WIDTH / division * (i + 1);
+        }else if(i == 1){
+            x = VIEW_WIDTH / division * division / 2;
+        }else if(i == 2){
+            x = VIEW_WIDTH / division * (division - 1);
+        }else{
+            x = VIEW_WIDTH / division * (i + 1);
+        }
+//        Gdx.app.log("@@@", "[nextXcoordAt] i:" + i +", x:" + x);
+
+        return x;
     }
 
     private int nextYcoordAt(int i){
