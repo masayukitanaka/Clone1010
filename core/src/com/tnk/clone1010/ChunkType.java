@@ -38,7 +38,7 @@ public enum ChunkType {
     HORIZONTAL3,
 
     /**
-     *  @
+     * @
      * @@
      */
     RIGHT_UP3,
@@ -51,7 +51,7 @@ public enum ChunkType {
 
     /**
      * @@
-     *  @
+     * @
      */
     RIGHT_DOWN3,
 
@@ -95,8 +95,8 @@ public enum ChunkType {
     HORIZONTAL5,
 
     /**
-     *   @
-     *   @
+     * @
+     * @
      * @@@
      */
     RIGHT_UP5,
@@ -110,8 +110,8 @@ public enum ChunkType {
 
     /**
      * @@@
-     *   @
-     *   @
+     * @
+     * @
      */
     RIGHT_DOWN5,
 
@@ -129,8 +129,8 @@ public enum ChunkType {
      */
     SQUARE9;
 
-    public int getBlockNumber(){
-        switch(this){
+    public int getBlockNumber() {
+        switch (this) {
             case SINGLE:
                 return 1;
             case VERTICAL2:
@@ -165,68 +165,68 @@ public enum ChunkType {
     private static final int SIZE = VALUES.length;
     private static final Random random = new Random();
 
-    public static ChunkType getRandom()  {
+    public static ChunkType getRandom() {
         return VALUES[random.nextInt(SIZE)];
     }
 
-    public int[][] getDrawMap(){
-        switch(this){
+    public int[][] getDrawMap() {
+        switch (this) {
             case SINGLE:
                 int num1[][] = {{1}};
                 return num1;
             case VERTICAL2:
-                int num2[][] = {{1},{1}};
+                int num2[][] = {{1}, {1}};
                 return num2;
             case HORIZONTAL2:
-                int num3[][] = {{1,1}};
+                int num3[][] = {{1, 1}};
                 return num3;
             case VERTICAL3:
-                int num4[][] = {{1},{1},{1}};
+                int num4[][] = {{1}, {1}, {1}};
                 return num4;
             case HORIZONTAL3:
-                int num5[][] = {{1,1,1}};
+                int num5[][] = {{1, 1, 1}};
                 return num5;
             case LEFT_UP3:
-                int num6[][] = {{1,0},{1,1}};
+                int num6[][] = {{1, 0}, {1, 1}};
                 return num6;
             case RIGHT_UP3:
-                int num7[][] = {{0,1},{1,1}};
+                int num7[][] = {{0, 1}, {1, 1}};
                 return num7;
             case RIGHT_DOWN3:
-                int num8[][] = {{1,1},{0,1}};
+                int num8[][] = {{1, 1}, {0, 1}};
                 return num8;
             case LEFT_DOWN3:
-                int num9[][] = {{1,1},{1,0}};
+                int num9[][] = {{1, 1}, {1, 0}};
                 return num9;
             case VERTICAL4:
-                int num10[][] = {{1},{1},{1},{1}};
+                int num10[][] = {{1}, {1}, {1}, {1}};
                 return num10;
             case HORIZONTAL4:
-                int num11[][] = {{1,1,1,1}};
+                int num11[][] = {{1, 1, 1, 1}};
                 return num11;
             case SQUARE4:
-                int num12[][] = {{1,1},{1,1}};
+                int num12[][] = {{1, 1}, {1, 1}};
                 return num12;
             case VERTICAL5:
-                int num13[][] = {{1},{1},{1},{1},{1}};
+                int num13[][] = {{1}, {1}, {1}, {1}, {1}};
                 return num13;
             case HORIZONTAL5:
-                int num14[][] = {{1,1,1,1,1}};
+                int num14[][] = {{1, 1, 1, 1, 1}};
                 return num14;
             case RIGHT_UP5:
-                int num15[][] = {{0,0,1},{0,0,1},{1,1,1}};
+                int num15[][] = {{0, 0, 1}, {0, 0, 1}, {1, 1, 1}};
                 return num15;
             case LEFT_UP5:
-                int num16[][] = {{1,0,0},{1,0,0},{1,1,1}};
+                int num16[][] = {{1, 0, 0}, {1, 0, 0}, {1, 1, 1}};
                 return num16;
             case RIGHT_DOWN5:
-                int num17[][] = {{1,1,1},{0,0,1},{0,0,1}};
+                int num17[][] = {{1, 1, 1}, {0, 0, 1}, {0, 0, 1}};
                 return num17;
             case LEFT_DOWN5:
-                int num18[][] = {{1,1,1},{1,0,0},{1,0,0}};
+                int num18[][] = {{1, 1, 1}, {1, 0, 0}, {1, 0, 0}};
                 return num18;
             case SQUARE9:
-                int num19[][] = {{1,1,1},{1,1,1},{1,1,1}};
+                int num19[][] = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
                 return num19;
         }
 
@@ -234,7 +234,7 @@ public enum ChunkType {
     }
 
     public int getBlockColor() {
-        switch(this){
+        switch (this) {
             case SINGLE:
                 return Block.COLOR_PURPLE;
             case VERTICAL2:

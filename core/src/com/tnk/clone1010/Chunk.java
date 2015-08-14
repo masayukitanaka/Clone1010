@@ -30,29 +30,29 @@ public class Chunk {
         this.color = type.getBlockColor();
         this.blocks = new Block[type.getBlockNumber()];
 
-        for(int i = 0; i < blocks.length; i++){
+        for (int i = 0; i < blocks.length; i++) {
             blocks[i] = new Block(color);
         }
     }
 
-    public Block getBlockAt(int index){
+    public Block getBlockAt(int index) {
         return blocks[index];
     }
 
-    public int getLeft(){
+    public int getLeft() {
         return x - blockWidth * map[0].length / 2;
     }
 
-    public int getTop(){
+    public int getTop() {
         return y - blockHeight * map.length / 2;
     }
 
-    public void draw(MyGdxGame game, SpriteBatch batch){
+    public void draw(MyGdxGame game, SpriteBatch batch) {
         Texture texture = game.getImage(color);
 
-        for(int i = 0; i < map.length; i++){
-            for(int j = 0; j < map[0].length; j++) {
-                if(map[i][j] == 1){
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
+                if (map[i][j] == 1) {
                     batch.draw(texture, getLeft() + j * blockWidth, getTop() + i * blockHeight, blockWidth, blockHeight);
                 }
             }
@@ -69,16 +69,16 @@ public class Chunk {
         blockHeight = MyGdxGame.SMALL_BLOCK;
     }
 
-    public boolean isContain(Vector3 coord){
+    public boolean isContain(Vector3 coord) {
         int margin = MyGdxGame.TOUCH_MARGIN;
-        for(int i = 0; i < map.length; i++){
-            for(int j = 0; j < map[0].length; j++) {
-                if(map[i][j] == 1){
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
+                if (map[i][j] == 1) {
                     int leftX = getLeft() + j * blockWidth;
                     int topY = getTop() + i * blockHeight;
-                    if((leftX - margin <= coord.x && coord.x <= leftX + blockWidth + margin)
+                    if ((leftX - margin <= coord.x && coord.x <= leftX + blockWidth + margin)
                             &&
-                            (topY - margin <= coord.y && coord.y <= topY + blockHeight + margin)){
+                            (topY - margin <= coord.y && coord.y <= topY + blockHeight + margin)) {
                         return true;
                     }
                 }
@@ -113,8 +113,8 @@ public class Chunk {
     }
 
     @Override
-    public String toString(){
-        return "{chunkType:"+ type +", color:" + color +"}";
+    public String toString() {
+        return "{chunkType:" + type + ", color:" + color + "}";
     }
 
     public int getHeight() {
@@ -125,7 +125,7 @@ public class Chunk {
         return marginFunc(map.length);
     }
 
-    private int marginFunc(int t){
+    private int marginFunc(int t) {
         return 8 * t * (10 - t);
     }
 }

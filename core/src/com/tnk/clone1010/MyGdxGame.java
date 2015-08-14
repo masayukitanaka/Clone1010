@@ -13,11 +13,11 @@ import com.badlogic.gdx.math.Vector3;
 
 public class MyGdxGame extends ApplicationAdapter {
 
-	public static final int VIEW_WIDTH = 480;
-	public static final int VIEW_HEIGHT = 800;
+    public static final int VIEW_WIDTH = 480;
+    public static final int VIEW_HEIGHT = 800;
 
-	public static final int MARGIN_LEFT = 30;
-	public static final int MARGIN_UPPER = 150;
+    public static final int MARGIN_LEFT = 30;
+    public static final int MARGIN_UPPER = 150;
 
     public static final int SMALL_BLOCK = 28;
     public static final int BLOCK_SIZE = 42;
@@ -27,15 +27,15 @@ public class MyGdxGame extends ApplicationAdapter {
     public static final int RESET_BUTTON = 60;
     public static final int TOUCH_MARGIN = 60;
 
-	private OrthographicCamera camera; // upside down: y coordinate goes down to increase
-	private OrthographicCamera uiCamera; // y coordinate goes up to increase
-	private OrthographicCamera menuCamera; // y coordinate goes up to increase
+    private OrthographicCamera camera; // upside down: y coordinate goes down to increase
+    private OrthographicCamera uiCamera; // y coordinate goes up to increase
+    private OrthographicCamera menuCamera; // y coordinate goes up to increase
 
-	private SpriteBatch batch;
+    private SpriteBatch batch;
     private int score;
 
-	private Chunk next[];
-	private Chunk heldChunk;
+    private Chunk next[];
+    private Chunk heldChunk;
     private Texture[] blockImages;
     private Texture resumeButton;
     private GameText text;
@@ -50,12 +50,12 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
     @Override
-	public void create () {
+    public void create() {
         initResources();
         resetGame();
     }
 
-    private void initResources(){
+    private void initResources() {
         batch = new SpriteBatch();
 
         blockImages = new Texture[Block.VARIATION_COLOR + 1];
@@ -89,7 +89,7 @@ public class MyGdxGame extends ApplicationAdapter {
         text = new GameText();
     }
 
-    private void resetGame(){
+    private void resetGame() {
         board = new Board(MARGIN_LEFT, MARGIN_UPPER);
         next = new Chunk[NEXT_CHUNK_NUMBER];
         score = 0;
@@ -97,31 +97,40 @@ public class MyGdxGame extends ApplicationAdapter {
         gameState = GameState.READY;
     }
 
-	@Override
-	public void render () {
+    @Override
+    public void render() {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if(gameState == GameState.PLAY || gameState == GameState.READY) {
+        if (gameState == GameState.PLAY || gameState == GameState.READY) {
             update();
             draw();
-        }else if(gameState == GameState.OVER){
+        } else if (gameState == GameState.OVER) {
             // no update
             draw();
             updateMenu();
             drawMenu();
         }
-	}
+    }
+
+    @Override
+    public void dispose() {
+        for (Texture t : blockImages) {
+            t.dispose();
+        }
+        slidingSound.dispose();
+        deleteSound.dispose();
+    }
 
     private void updateMenu() {
         // user action
-        if(Gdx.input.justTouched()){
+        if (Gdx.input.justTouched()) {
             updatePosition();
-            if(VIEW_WIDTH / 2 - RESUME_BUTTON / 2 <= touchPosition.x
+            if (VIEW_WIDTH / 2 - RESUME_BUTTON / 2 <= touchPosition.x
                     && touchPosition.x <= VIEW_WIDTH / 2 + RESUME_BUTTON / 2
                     && VIEW_HEIGHT / 2 - RESUME_BUTTON / 2 <= touchPosition.y
                     && touchPosition.y <= VIEW_HEIGHT / 2 + RESUME_BUTTON / 2
-                    ){
+                    ) {
                 // within resume button
                 resetGame();
                 gameState = GameState.PLAY;
@@ -143,29 +152,29 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.begin();
         batch.draw(
                 resumeButton,
-                VIEW_WIDTH / 2 - RESUME_BUTTON /2,
-                VIEW_HEIGHT / 2 - RESUME_BUTTON /2,
+                VIEW_WIDTH / 2 - RESUME_BUTTON / 2,
+                VIEW_HEIGHT / 2 - RESUME_BUTTON / 2,
                 RESUME_BUTTON,
                 RESUME_BUTTON);
         batch.end();
     }
 
-    private void update(){
+    private void update() {
         // user action
-        if(Gdx.input.justTouched()){
+        if (Gdx.input.justTouched()) {
             updatePosition();
 
             // reset
-            if(VIEW_WIDTH - RESET_BUTTON - TOUCH_MARGIN <= touchPosition.x
+            if (VIEW_WIDTH - RESET_BUTTON - TOUCH_MARGIN <= touchPosition.x
                     && touchPosition.y <= RESET_BUTTON + TOUCH_MARGIN
-                    ){
+                    ) {
                 resetGame();
                 return;
             }
 
             //Gdx.app.log("@@@", "x: " + touchPosition.x + ", y:" + touchPosition.y);
-            for(int i = 0; i < next.length; i++){
-                if(next[i] != null && next[i].isContain(touchPosition)) {
+            for (int i = 0; i < next.length; i++) {
+                if (next[i] != null && next[i].isContain(touchPosition)) {
                     heldChunk = next[i];
                     heldChunkPosition = i;
                     heldChunk.onTouch();
@@ -174,19 +183,19 @@ public class MyGdxGame extends ApplicationAdapter {
             }
         }
 
-        if(heldChunk != null){
-            if(Gdx.input.isTouched()) {
+        if (heldChunk != null) {
+            if (Gdx.input.isTouched()) {
                 // move
                 updatePosition();
-                heldChunk.setX((int)touchPosition.x);
-                heldChunk.setY((int)touchPosition.y - heldChunk.getMarginFromFinger());
-            }else{
+                heldChunk.setX((int) touchPosition.x);
+                heldChunk.setY((int) touchPosition.y - heldChunk.getMarginFromFinger());
+            } else {
                 // release
-                if(board.place(heldChunk)){
+                if (board.place(heldChunk)) {
 
                     score += heldChunk.blockNumber();
 
-                    if(board.hasLine()){
+                    if (board.hasLine()) {
                         deleteSound.play();
                         score += board.eraseLine();
                     }
@@ -194,7 +203,7 @@ public class MyGdxGame extends ApplicationAdapter {
                     next[heldChunkPosition] = null;
                     heldChunk = null;
                     fillNextIfNecessary();
-                }else{
+                } else {
                     heldChunk.released();
                     heldChunk.setX(nextXcoordAt(heldChunkPosition));
                     heldChunk.setY(nextYcoordAt(heldChunkPosition));
@@ -203,16 +212,16 @@ public class MyGdxGame extends ApplicationAdapter {
             }
         }
 
-        if(!canPlaceAny()){
+        if (!canPlaceAny()) {
             gameState = GameState.OVER;
         }
     }
 
-    private boolean canPlaceAny(){
+    private boolean canPlaceAny() {
         //Gdx.app.log("@@@ debug", "can place any");
-        for(int i = 0; i < next.length; i++){
+        for (int i = 0; i < next.length; i++) {
             //Gdx.app.log("@@@ debug", "chunk:" + next[i].toString() +", is placeable: " + board.isPlaceable(next[i]));
-            if(next[i] != null && board.isPlaceable(next[i])){
+            if (next[i] != null && board.isPlaceable(next[i])) {
                 return true;
             }
         }
@@ -220,7 +229,7 @@ public class MyGdxGame extends ApplicationAdapter {
         return false;
     }
 
-    private void draw(){
+    private void draw() {
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -229,8 +238,8 @@ public class MyGdxGame extends ApplicationAdapter {
         board.draw(batch, this);
 
         // next
-        for(int i = 0; i < next.length; i++){
-            if(next[i] != null) {
+        for (int i = 0; i < next.length; i++) {
+            if (next[i] != null) {
                 next[i].draw(this, batch);
             }
 
@@ -251,8 +260,8 @@ public class MyGdxGame extends ApplicationAdapter {
 
 
     private void fillNextIfNecessary() {
-        for(int i = 0; i < next.length; i++){
-            if(next[i] != null) {
+        for (int i = 0; i < next.length; i++) {
+            if (next[i] != null) {
                 return;
             }
         }
@@ -260,40 +269,40 @@ public class MyGdxGame extends ApplicationAdapter {
         fillNext();
     }
 
-    private void fillNext(){
+    private void fillNext() {
         slidingSound.play();
-        for(int i = 0; i < NEXT_CHUNK_NUMBER; i++) {
+        for (int i = 0; i < NEXT_CHUNK_NUMBER; i++) {
             next[i] = new Chunk(nextXcoordAt(i), nextYcoordAt(i), SMALL_BLOCK);
         }
     }
 
-    private int nextXcoordAt(int i){
+    private int nextXcoordAt(int i) {
         int division = 5;
         int x;
-        if(i == 0){
+        if (i == 0) {
             x = VIEW_WIDTH / division * (i + 1);
-        }else if(i == 1){
+        } else if (i == 1) {
             x = VIEW_WIDTH / division * division / 2;
-        }else if(i == 2){
+        } else if (i == 2) {
             x = VIEW_WIDTH / division * (division - 1);
-        }else{
+        } else {
             x = VIEW_WIDTH / division * (i + 1);
         }
 
         return x;
     }
 
-    private int nextYcoordAt(int i){
+    private int nextYcoordAt(int i) {
         return (VIEW_HEIGHT - board.bottomY()) / 2 + board.bottomY();
     }
 
-    private void updatePosition(){
+    private void updatePosition() {
         int x = Gdx.input.getX();
         int y = Gdx.input.getY();
         touchPosition = camera.unproject(new Vector3(x, y, 0));
     }
 
-    public Texture getImage(int color){
+    public Texture getImage(int color) {
         return blockImages[color];
     }
 }
