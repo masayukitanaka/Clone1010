@@ -3,7 +3,7 @@ Cloning implementation of *1010! Puzzle* (by Gram Games)
 
 [YouTube](https://youtu.be/_bCGqbElXwQ)
 
-![Video](https://raw.github.com/wiki/masayukitanaka/Clone1010/images/clone1010.gif)
+<img src="https://raw.github.com/wiki/masayukitanaka/Clone1010/images/clone1010.gif" alt="Video" width="320"/>
 
 [(Android) App Download](https://raw.github.com/wiki/masayukitanaka/Clone1010/images/android-debug.apk)
 
